@@ -1,8 +1,9 @@
-import { Controller, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create_user.dto';
 import { error } from 'console';
 import { SingInDto } from './dto/sign_in.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -10,7 +11,7 @@ export class AuthController {
 
   @Post('signup')
   @HttpCode(201)
-  async signUp(createUserDto: CreateUserDto) {
+  async signUp(@Body() createUserDto: CreateUserDto) {
     const result = await this.authService.signUp(createUserDto);
 
     return {
@@ -22,7 +23,7 @@ export class AuthController {
 
   @Post('signin')
   @HttpCode(200)
-  async signIn(signInDto: SingInDto){
+  async signIn( @Body() signInDto: SingInDto){
     const userData =  await this.authService.signIn(signInDto);
 
     return {
@@ -35,6 +36,16 @@ export class AuthController {
         role: userData.role,
         token: userData.token
       }
+    }
+  }
+
+  @Post('signout')
+  @UseGuards(AuthGuard())
+  @HttpCode(200)
+  async signOut(){
+    return {
+      message: 'user logged out successfully',
+      error: false,
     }
   }
 }

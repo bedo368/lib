@@ -1,16 +1,18 @@
-import { UserAuthRepo } from './repositories/user_auth.repo';
 import { CreateUserDto } from './dto/create_user.dto';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserEntity } from './entities/user.enetiy';
 import { genrateEncriptedPassword } from 'src/utls/functions/genrate_encripted_password';
 import { SingInDto } from './dto/sign_in.dto';
 import * as bcrypt from 'bcrypt';
 import { UserAuthModel } from './models/user.auth.model';
 import { JwtService } from '@nestjs/jwt';
+import { AUTHREPO } from './providers/auth.provider';
+import { UserAuthInterface } from './repositories/user_auth_repo.interface';
 @Injectable()
 export class AuthService {
   constructor(
-    private userAuthRepo: UserAuthRepo,
+    @Inject(AUTHREPO) private readonly userRepo: UserAuthInterface,
+    
     private jwtService: JwtService,
   ) {}
   async signUp(createUserDto: CreateUserDto) {
@@ -18,7 +20,7 @@ export class AuthService {
       createUserDto.password,
     );
 
-    await this.userAuthRepo.cerateNewUser({
+    await this.userRepo.cerateNewUser({
       name: createUserDto.name,
       userName: createUserDto.userName,
       password: encriptedPassword,
@@ -26,7 +28,7 @@ export class AuthService {
   }
 
   async signIn(signInDto: SingInDto): Promise<UserAuthModel> {
-    const user = await this.userAuthRepo.findUserByUserName(signInDto.userName);
+    const user = await this.userRepo.findUserByUserName(signInDto.userName);
     if (!user) {
       throw new Error('user not found');
     }
