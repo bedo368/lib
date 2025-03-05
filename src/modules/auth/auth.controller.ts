@@ -1,7 +1,6 @@
 import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create_user.dto';
-import { error } from 'console';
 import { SingInDto } from './dto/sign_in.dto';
 import { AuthGuard } from '@nestjs/passport';
 

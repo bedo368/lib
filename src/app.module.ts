@@ -6,6 +6,7 @@ import { JwtStrategy } from './cores/stratigies/jwt_stratigy';
 import { TransactionItem } from './common/entities/transection_item.entity';
 import { Book } from './common/entities/book.entity';
 import { Transaction } from './common/entities/transaction.entity';
+import { BookModule } from './modules/book/book.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { Transaction } from './common/entities/transaction.entity';
       synchronize: true, // For development only. Don't use 'true' in production.,
       entities: [ UserEntity , Transaction , TransactionItem , Book],
     }),
+    BookModule,
   ],
   controllers: [],
   providers: [JwtStrategy],
