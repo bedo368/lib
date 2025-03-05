@@ -1,4 +1,4 @@
-import { UserEntity } from "../entities/user.enetiy";
+import { UserEntity } from "../../../common/entities/user.enetiy";
 
 export interface UserAuthInterface {
   findUser(id: string) : Promise<UserEntity>;

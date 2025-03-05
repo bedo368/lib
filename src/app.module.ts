@@ -1,8 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from './modules/auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from './modules/auth/entities/user.enetiy';
+import { UserEntity } from './common/entities/user.enetiy';
 import { JwtStrategy } from './cores/stratigies/jwt_stratigy';
+import { TransactionItem } from './common/entities/transection_item.entity';
+import { Book } from './common/entities/book.entity';
+import { Transaction } from './common/entities/transaction.entity';
 
 @Module({
   imports: [
@@ -15,7 +18,7 @@ import { JwtStrategy } from './cores/stratigies/jwt_stratigy';
       password: process.env.DB_PASS || 'yugabyte',
       database: process.env.DB_NAME || 'yugabyte',
       synchronize: true, // For development only. Don't use 'true' in production.,
-      entities: [ UserEntity],
+      entities: [ UserEntity , Transaction , TransactionItem , Book],
     }),
   ],
   controllers: [],

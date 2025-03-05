@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { UserEntity } from 'src/modules/auth/entities/user.enetiy';
+import { UserEntity } from 'src/common/entities/user.enetiy';
 import { UserAuthModel } from 'src/modules/auth/models/user.auth.model';
 import { AUTHREPO } from 'src/modules/auth/providers/auth.provider';
 import { UserAuthInterface } from 'src/modules/auth/repositories/user_auth_repo.interface';

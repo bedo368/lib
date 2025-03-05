@@ -1,7 +1,7 @@
 import { DataSource, Repository } from 'typeorm';
-import { UserEntity } from '../entities/user.enetiy';
+import { UserEntity } from '../../../common/entities/user.enetiy';
 import { InternalServerErrorException } from '@nestjs/common';
-import { UserRole } from '../enums/user.role';
+import { UserRole } from '../../../common/enums/user.role.enum';
 
 export const createUserAuthRepo = (dataSource: DataSource) => {
   const baseRepository: Repository<UserEntity> =
