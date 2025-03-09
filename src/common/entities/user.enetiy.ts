@@ -16,7 +16,7 @@ export class UserEntity {
   @Column()
   password: string;
 
-  @Column({ enum: UserRole })
+  @Column({ enum: UserRole  ,default: UserRole.ADMIN})
   role: UserRole;
 
   @OneToMany(() => Transaction, transaction => transaction.user)

@@ -2,9 +2,9 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { TransactionItem } from "./transection_item.entity";
 
 @Entity()
-export class Book {
+export class BookEntity {
   @PrimaryGeneratedColumn("uuid")
-  id: number;
+  id: string;
 
   @Column()
   title: string;
@@ -12,13 +12,27 @@ export class Book {
   @Column({ unique: true })
   ISBN: string;
 
-  @Column('decimal')
+  // ✅ Force `price` to always be stored and returned as a number
+  @Column('decimal', {
+    transformer: {
+      to: (value: number) => value, // Store as-is
+      from: (value: string | number) => Number(value), // Convert to number when retrieving
+    },
+  })
   price: number;
 
-  @Column('decimal')
+  // ✅ Force `rentalPricePerDay` to be a number
+  @Column('decimal', {
+    nullable: true,
+    default: 0.5,
+    transformer: {
+      to: (value: number) => value,
+      from: (value: string | number) => Number(value),
+    },
+  })
   rentalPricePerDay: number;
 
-  @Column()
+  @Column('int') // ✅ Ensure integer storage
   availableQuantity: number;
 
   @OneToMany(() => TransactionItem, transactionItem => transactionItem.book)

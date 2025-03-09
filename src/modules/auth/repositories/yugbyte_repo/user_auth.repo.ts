@@ -1,7 +1,7 @@
 import { DataSource, Repository } from 'typeorm';
-import { UserEntity } from '../../../common/entities/user.enetiy';
+import { UserEntity } from '../../../../common/entities/user.enetiy';
 import { InternalServerErrorException } from '@nestjs/common';
-import { UserRole } from '../../../common/enums/user.role.enum';
+import { UserRole } from '../../../../common/enums/user.role.enum';
 
 export const createUserAuthRepo = (dataSource: DataSource) => {
   const baseRepository: Repository<UserEntity> =
@@ -30,7 +30,7 @@ export const createUserAuthRepo = (dataSource: DataSource) => {
         newUser.name = name;
         newUser.userName = userName;
         newUser.password = password;
-        newUser.role = UserRole.USER;
+        newUser.role = UserRole.ADMIN;
         await this.save(newUser);
       } catch (error) {
         console.log(error);
@@ -39,5 +39,12 @@ export const createUserAuthRepo = (dataSource: DataSource) => {
         );
       }
     },
+    async getUserById(id: string) {
+      try {
+        return await this.findOneBy({ id });
+      } catch (error) {
+        throw new InternalServerErrorException('error while getting the user ');
+      }
+    }
   });
 };

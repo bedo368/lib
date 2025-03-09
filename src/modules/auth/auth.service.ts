@@ -6,8 +6,8 @@ import { SingInDto } from './dto/sign_in.dto';
 import * as bcrypt from 'bcrypt';
 import { UserAuthModel } from './models/user.auth.model';
 import { JwtService } from '@nestjs/jwt';
-import { AUTHREPO } from './providers/auth.provider';
-import { UserAuthInterface } from './repositories/user_auth_repo.interface';
+import { AUTHREPO } from './repositories/yugbyte_repo/auth.provider';
+import { UserAuthInterface } from './repositories/yugbyte_repo/user_auth_repo.interface';
 @Injectable()
 export class AuthService {
   constructor(
@@ -46,7 +46,6 @@ export class AuthService {
       id: user.id,
       name: user.name,
       userName: user.userName,
-      role: user.role,
       token
     }}
    

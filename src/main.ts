@@ -4,11 +4,18 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
   );
+
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,  // Removes unknown fields from incoming requests
+    forbidNonWhitelisted: true, // Rejects requests with extra unknown fields
+    transform: true,  // Automatically transforms incoming JSON payloads
+  }));
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
