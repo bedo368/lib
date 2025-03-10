@@ -1,5 +1,6 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { TransactionItem } from "./transection_item.entity";
+import { UserEntity } from "./user.enetiy";
 
 @Entity()
 export class BookEntity {
@@ -37,4 +38,8 @@ export class BookEntity {
 
   @OneToMany(() => TransactionItem, transactionItem => transactionItem.book)
   transactionItems: TransactionItem[];
+
+  @ManyToOne(() => UserEntity, user => user.books , { onDelete: 'CASCADE'  , onUpdate: 'CASCADE' , nullable: false } )
+  
+  creator: UserEntity;
 }

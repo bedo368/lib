@@ -6,7 +6,6 @@ import {
   Inject,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Observable } from 'rxjs';
 import { AUTHREPO } from 'src/modules/auth/repositories/yugbyte_repo/auth.provider';
 import { UserRole } from 'src/common/enums/user.role.enum';
 

@@ -12,7 +12,10 @@ export const createBookRepo = (dataSource: DataSource) => {
     dataSource.getRepository<BookEntity>(BookEntity);
 
   return baseRepository.extend({
-    async createBook(createBookDto: CreateBookDto): Promise<BookEntity> {
+    async createBook(
+      createBookDto: CreateBookDto,
+      creator: String,
+    ): Promise<BookEntity> {
       try {
         const book = await this.save({
           title: createBookDto.title,
@@ -20,6 +23,7 @@ export const createBookRepo = (dataSource: DataSource) => {
           availableQuantity: createBookDto.quantity,
           ISBN: createBookDto.isbn,
           rentalPricePerDay: createBookDto.rentalPricePerDay,
+          creator: creator,
         });
         console.log(book);
         return book;
@@ -43,7 +47,58 @@ export const createBookRepo = (dataSource: DataSource) => {
     },
     async getAllBook(): Promise<BookEntity[]> {
       try {
-        return this.find();
+        const books = await this.createQueryBuilder('book')
+          .leftJoinAndSelect('book.creator', 'creator')
+          .select(['book', 'creator.id']) // 👈 Only select the creator's ID
+          .getMany();
+
+        console.log(books);
+        return books;
+      } catch (error) {
+        const newerror = handleDatabaseError(error);
+        throw newerror;
+      }
+    },
+    async deleteBook(id: string): Promise<BookEntity> {
+      try {
+        const book = await this.findOne({ where: { id: id } });
+        if (book === null) {
+          throw new NotFoundException('book not found');
+        }
+        await this.remove(book);
+        return book;
+      } catch (error) {
+        const newerror = handleDatabaseError(error);
+        throw newerror;
+      }
+    },
+    async updateBook(
+      id: string,
+      createBookDto: CreateBookDto,
+    ): Promise<BookEntity> {
+      try {
+        const book = await this.findOne({ where: { id: id } });
+        if (book === null) {
+          throw new NotFoundException('book not found');
+        }
+        if(createBookDto.title){
+          book.title = createBookDto.title;
+        }
+        if(createBookDto.price){
+          book.price = createBookDto.price;
+        }
+        if(createBookDto.quantity){
+          book.availableQuantity = createBookDto.quantity;
+        }
+        if(createBookDto.isbn){
+          book.ISBN = createBookDto.isbn;
+        }
+        if(createBookDto.rentalPricePerDay){
+          book.rentalPricePerDay = createBookDto.rentalPricePerDay;
+        }
+        
+        await this.save(book);
+        return book;
       } catch (error) {
         const newerror = handleDatabaseError(error);
         throw newerror;

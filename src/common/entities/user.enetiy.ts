@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { UserRole } from '../enums/user.role.enum';
-import { Transaction } from './transaction.entity';
+import { TransactionEntity  } from './transaction.entity';
+import { BookEntity } from './book.entity';
 
 @Entity()
 export class UserEntity {
@@ -19,6 +20,8 @@ export class UserEntity {
   @Column({ enum: UserRole  ,default: UserRole.ADMIN})
   role: UserRole;
 
-  @OneToMany(() => Transaction, transaction => transaction.user)
-  transactions: Transaction[];
+  @OneToMany(() => TransactionEntity, transaction => transaction.user)
+  transactions: TransactionEntity[];
+  @OneToMany(() => BookEntity, book => book.creator)
+  books: BookEntity[];
 }

@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { BookEntity } from './book.entity';
-import { Transaction } from './transaction.entity';
+import { TransactionEntity } from './transaction.entity';
 @Entity ()
 export class TransactionItem {
   @PrimaryGeneratedColumn()
@@ -15,8 +15,8 @@ export class TransactionItem {
   @Column('decimal')
   itemTotal: number;
 
-  @ManyToOne(() => Transaction, transaction => transaction.items)
-  transaction: Transaction;
+  @ManyToOne(() => TransactionEntity, transaction => transaction.items)
+  transaction: TransactionEntity;
 
   @ManyToOne(() => BookEntity, book => book.transactionItems)
   book: BookEntity;
