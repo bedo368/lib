@@ -1,4 +1,4 @@
-import { Transaction } from './../../../common/entities/transaction.entity';
+import { Transaction } from '../entities/transaction.entity';
 import { TransactionItemModel } from './transection_item_model';
 
 export class TransactionModel {

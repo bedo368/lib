@@ -9,7 +9,7 @@ import {
 import { CreateTransactionDto } from './dto/create_transection.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { TransectionService } from './transection.service';
-import { TransactionModel } from './models/transection_model';
+import { TransactionModel } from '../../common/models/transection_model';
 
 @Controller('transection')
 export class TransectionController {
