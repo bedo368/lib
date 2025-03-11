@@ -1,10 +1,16 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { BookEntity } from './book.entity';
-import { TransactionEntity } from './transaction.entity';
-@Entity ()
+import { Book } from './book.entity';
+import { Transaction } from './transaction.entity';
+import { TransactionTypeEnum } from '../enums/transection.type.enum';
+import { Exclude, Expose, Type } from 'class-transformer';
+
+@Entity()
 export class TransactionItem {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column({ type: 'enum', enum: TransactionTypeEnum })
+  type: TransactionTypeEnum;
 
   @Column()
   quantity: number;
@@ -12,12 +18,18 @@ export class TransactionItem {
   @Column({ nullable: true })
   rentalDays?: number;
 
+  @Column({ nullable: true })
+  price: number;
+
   @Column('decimal')
   itemTotal: number;
 
-  @ManyToOne(() => TransactionEntity, transaction => transaction.items)
-  transaction: TransactionEntity;
+  @ManyToOne(() => Transaction, (transaction) => transaction.items)
+  @Exclude() // Exclude the circular reference from TransactionEntity
+  transaction: Transaction;
 
-  @ManyToOne(() => BookEntity, book => book.transactionItems)
-  book: BookEntity;
+  @ManyToOne(() => Book, (book) => book.transactionItems)
+  @Expose()  // Expose book to be included in serialization
+  @Type(() => Book) // Ensure correct type is used during serialization
+  book: Book;
 }

@@ -1,11 +1,11 @@
 import { DataSource, Repository } from 'typeorm';
-import { UserEntity } from '../../../../common/entities/user.enetiy';
+import { User } from '../../../../common/entities/user.enetiy';
 import { InternalServerErrorException } from '@nestjs/common';
 import { UserRole } from '../../../../common/enums/user.role.enum';
 
 export const createUserAuthRepo = (dataSource: DataSource) => {
-  const baseRepository: Repository<UserEntity> =
-    dataSource.getRepository<UserEntity>(UserEntity);
+  const baseRepository: Repository<User> =
+    dataSource.getRepository<User>(User);
 
   return baseRepository.extend({
     async findUser(id: string) {
@@ -26,7 +26,7 @@ export const createUserAuthRepo = (dataSource: DataSource) => {
 
     async cerateNewUser({ name, userName, password }) {
       try {
-        const newUser = new UserEntity();
+        const newUser = new User();
         newUser.name = name;
         newUser.userName = userName;
         newUser.password = password;

@@ -1,10 +1,10 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { UserRole } from '../enums/user.role.enum';
-import { TransactionEntity  } from './transaction.entity';
-import { BookEntity } from './book.entity';
+import { Transaction  } from './transaction.entity';
+import { Book } from './book.entity';
 
 @Entity()
-export class UserEntity {
+export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -20,8 +20,8 @@ export class UserEntity {
   @Column({ enum: UserRole  ,default: UserRole.ADMIN})
   role: UserRole;
 
-  @OneToMany(() => TransactionEntity, transaction => transaction.user)
-  transactions: TransactionEntity[];
-  @OneToMany(() => BookEntity, book => book.creator)
-  books: BookEntity[];
+  @OneToMany(() => Transaction, transaction => transaction.user)
+  transactions: Transaction[];
+  @OneToMany(() => Book, book => book.creator)
+  books: Book[];
 }

@@ -2,20 +2,20 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { BookEntity } from 'src/common/entities/book.entity';
+import { Book } from 'src/common/entities/book.entity';
 import { DataSource, Repository } from 'typeorm';
 import { CreateBookDto } from '../../dto/create_book.dto';
 import { handleDatabaseError } from 'src/cores/utls/functions/database_error';
 
 export const createBookRepo = (dataSource: DataSource) => {
-  const baseRepository: Repository<BookEntity> =
-    dataSource.getRepository<BookEntity>(BookEntity);
+  const baseRepository: Repository<Book> =
+    dataSource.getRepository<Book>(Book);
 
   return baseRepository.extend({
     async createBook(
       createBookDto: CreateBookDto,
       creator: String,
-    ): Promise<BookEntity> {
+    ): Promise<Book> {
       try {
         const book = await this.save({
           title: createBookDto.title,
@@ -32,7 +32,7 @@ export const createBookRepo = (dataSource: DataSource) => {
         throw newerror;
       }
     },
-    async getBook(id: string): Promise<BookEntity> {
+    async getBook(id: string): Promise<Book> {
       try {
         const book = await this.findOne({ where: { id: id } });
 
@@ -45,7 +45,7 @@ export const createBookRepo = (dataSource: DataSource) => {
         throw newerror;
       }
     },
-    async getAllBook(): Promise<BookEntity[]> {
+    async getAllBook(): Promise<Book[]> {
       try {
         const books = await this.createQueryBuilder('book')
           .leftJoinAndSelect('book.creator', 'creator')
@@ -59,7 +59,7 @@ export const createBookRepo = (dataSource: DataSource) => {
         throw newerror;
       }
     },
-    async deleteBook(id: string): Promise<BookEntity> {
+    async deleteBook(id: string): Promise<Book> {
       try {
         const book = await this.findOne({ where: { id: id } });
         if (book === null) {
@@ -75,7 +75,7 @@ export const createBookRepo = (dataSource: DataSource) => {
     async updateBook(
       id: string,
       createBookDto: CreateBookDto,
-    ): Promise<BookEntity> {
+    ): Promise<Book> {
       try {
         const book = await this.findOne({ where: { id: id } });
         if (book === null) {
