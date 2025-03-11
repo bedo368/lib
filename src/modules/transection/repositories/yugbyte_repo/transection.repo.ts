@@ -53,10 +53,11 @@ export const createTransectionRepo = (dateaScource: DataSource) => {
     
       return savedTransaction;
     },
-    async getAllTransection() {
+    async getAllTransection( userId: string) {
       return baseRpoo.find({
+        where: { user: { id: userId }},
         relations: [
-          // 'user',       // Include user if needed
+          'user',       // Include user if needed
           'items',       // Load transaction items
           'items.book'   // Load book for each item
         ],

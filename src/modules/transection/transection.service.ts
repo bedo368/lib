@@ -17,6 +17,6 @@ export class TransectionService {
   }
 
   async getTransection(userId: string) {
-    return await this.transectionRepo.getAllTransection();
+    return await this.transectionRepo.getAllTransection(userId);
   }
 }

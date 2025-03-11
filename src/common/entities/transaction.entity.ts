@@ -7,7 +7,7 @@ import { Exclude, Expose } from "class-transformer";
 @Entity()
 export class Transaction {
   @PrimaryGeneratedColumn("uuid")
-  id: number;
+  id: string;
 
   @Column()
   total: number;

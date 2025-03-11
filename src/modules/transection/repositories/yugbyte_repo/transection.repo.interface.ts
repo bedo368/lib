@@ -7,7 +7,7 @@ export interface TransectionRepoInterface  {
 
    createNewTransection( userId:string, createTransectionDto: CreateTransactionDto) : Promise<Transaction> ;
 
-   getAllTransection() : Promise<Transaction[]> ;
+   getAllTransection( userId: string) : Promise<Transaction[]> ;
 
    deleteTransection(id : string) : Promise<String> ;
    
